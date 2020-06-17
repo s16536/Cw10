@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using lab05.GeneratedModels;
 using lab05.Handlers;
-using lab05.Middlewares;
 using lab05.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -36,23 +35,23 @@ namespace lab05
         {
 
             services.AddDbContext<s16536Context>();
-
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddJwtBearer(options =>
-                {
-                    options.TokenValidationParameters = new TokenValidationParameters()
-                    {
-                        ValidateIssuer =  true,
-                        ValidateAudience = true,
-                        ValidIssuer = "Gakko",
-                        ValidAudience = "Students",
-                        ValidateLifetime =  true,
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["SecretKey"]))
-                    };
-                });
+            //
+            // services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            //     .AddJwtBearer(options =>
+            //     {
+            //         options.TokenValidationParameters = new TokenValidationParameters()
+            //         {
+            //             ValidateIssuer =  true,
+            //             ValidateAudience = true,
+            //             ValidIssuer = "Gakko",
+            //             ValidAudience = "Students",
+            //             ValidateLifetime =  true,
+            //             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["SecretKey"]))
+            //         };
+            //     });
             // services.AddAuthentication("AuthenticationBasic")
                 // .AddScheme<AuthenticationSchemeOptions, BasicAuthHandler>("AuthenticationBasic", null);
-            services.AddSingleton<IStudentsDbService, ServerDbService>();
+            services.AddScoped<IStudentsDbService, EfStudentsDbService>();
             services.AddControllers();
         }
 
@@ -64,28 +63,26 @@ namespace lab05
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseMiddleware<LoggingMiddleware>();
-            
-            app.Use(async (context, next) =>
-            {
-                if (!context.Request.Headers.ContainsKey("Index"))
-                {
-                    context.Response.StatusCode = StatusCodes.Status401Unauthorized;
-                    await context.Response.WriteAsync("Musisz podac numer indeksu");
-                    return;
-                }
-
-                string index = context.Request.Headers["Index"].ToString();
-                var student = service.GetStudent(index);
-                if (student == null)
-                {
-                    context.Response.StatusCode = StatusCodes.Status401Unauthorized;
-                    await context.Response.WriteAsync("Nieprawidlowy numer indeksu");
-                    return;
-                }
-
-                await next();
-            });
+            // app.Use(async (context, next) =>
+            // {
+            //     if (!context.Request.Headers.ContainsKey("Index"))
+            //     {
+            //         context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+            //         await context.Response.WriteAsync("Musisz podac numer indeksu");
+            //         return;
+            //     }
+            //
+            //     string index = context.Request.Headers["Index"].ToString();
+            //     var student = service.GetStudent(index);
+            //     if (student == null)
+            //     {
+            //         context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+            //         await context.Response.WriteAsync("Nieprawidlowy numer indeksu");
+            //         return;
+            //     }
+            //
+            //     await next();
+            // });
 
             app.UseHttpsRedirection();
 

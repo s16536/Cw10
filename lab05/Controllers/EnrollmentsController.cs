@@ -1,7 +1,7 @@
 ﻿using System.Net;
 using lab05.DTOs;
 using lab05.DTOs.Requests;
-using lab05.Models;
+using lab05.GeneratedModels;
 using lab05.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -26,8 +26,8 @@ namespace lab05.Controllers
             {
                 FirstName = request.FirstName,
                 LastName = request.LastName,
-                DateOfBirth = request.BirthDate,
-                Faculty = request.Studies,
+                // DateOfBirth = request.BirthDate,
+                // Faculty = request.Studies,
                 IndexNumber = request.IndexNumber
 
             };

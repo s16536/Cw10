@@ -7,7 +7,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using lab05.DTOs.Requests;
-using lab05.Models;
+using lab05.GeneratedModels;
 using lab05.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -53,21 +53,22 @@ namespace lab05.Controllers
             return Ok(student);
         }
 
-        [HttpPut("{id}")]
-        public IActionResult UpdateStudent(int id, Student student)
+        [HttpPut("{index}")]
+        public IActionResult UpdateStudent(string index, Student student)
         {
-            _studentsDbService.UpdateStudent(id, student);
+            _studentsDbService.UpdateStudent(index, student);
             return Ok("Aktualizacja dokończona");
         }
 
-        [HttpDelete("{id}")]
-        public IActionResult DeleteStudent(int id)
+        [HttpDelete("{index}")]
+        public IActionResult DeleteStudent(string index)
         {
-            _studentsDbService.DeleteStudent(id);
+            _studentsDbService.DeleteStudent(index);
             return Ok("Usuwanie ukończone");
         }
 
         [HttpPost]
+        [Route("/login")]
         public IActionResult Login(LoginRequestDto request)
         {
 

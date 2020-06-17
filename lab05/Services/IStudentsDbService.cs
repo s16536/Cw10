@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using lab05.DTOs.Requests;
-using lab05.Models;
+using lab05.GeneratedModels;
 
 namespace lab05.Services
 {
@@ -8,9 +8,9 @@ namespace lab05.Services
     {
         public IEnumerable<Student> GetStudents();
         public Student GetStudent(string id);
-        public Enrollment AddStudent(Student student);
-        public void DeleteStudent(int id);
-        public void UpdateStudent(int id, Student student);
+        public Student AddStudent(Student student);
+        public void DeleteStudent(string index);
+        public void UpdateStudent(string index, Student student);
         public Enrollment PromoteStudents(PromoteStudentsRequest request);
     }
 }
