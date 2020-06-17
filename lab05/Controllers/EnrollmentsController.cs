@@ -22,28 +22,17 @@ namespace lab05.Controllers
         [Route("api/enrollments")]
         public IActionResult EnrollStudent(EnrollStudentRequest request)
         {
-            var student = new Student()
-            {
-                FirstName = request.FirstName,
-                LastName = request.LastName,
-                // DateOfBirth = request.BirthDate,
-                // Faculty = request.Studies,
-                IndexNumber = request.IndexNumber
-
-            };
-
-            var enrollment = _studentsDbService.AddStudent(student);
+            var enrollment = _studentsDbService.EnrollStudent(request);
             if (enrollment == null)
             {
                 return BadRequest();
             }
-
-            return Ok(enrollment);
+            return Ok(enrollment.IdEnrollment);
         }
 
 
         [HttpPost]
-        [Authorize(Roles = "employee")]
+        // [Authorize(Roles = "employee")]
         [Route("api/enrollments/promotions")]
         public IActionResult PromoteStudents(PromoteStudentsRequest request)
         {
@@ -53,7 +42,7 @@ namespace lab05.Controllers
                 return NotFound();
             }
 
-            return Created("api/enrollments/promotions", enrollment);
+            return Created("api/enrollments/promotions", enrollment.IdEnrollment);
         }
 
     }
